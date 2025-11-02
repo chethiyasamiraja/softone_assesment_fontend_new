@@ -1,0 +1,65 @@
+<div class="center-login-container">
+ 
+  <div class="form-card login-form-card">
+ 
+    <div class="login-logo">
+     
+      <p style="margin:8px 0 24px; color:#555; font-size:0.95rem; text-align:center;">
+        SoftOne Assignment 
+      </p>
+    </div>
+ 
+    <h2 class="login-title" style="text-align:center; margin-bottom:20px;">Sign In</h2>
+ 
+    <div class="alert-danger-static" *ngIf="errorMessage" style="margin-bottom:20px;">
+      {{ errorMessage }}
+    </div>
+ 
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()" novalidate>
+ 
+      <div class="form-group">
+        <label for="username" style="display:block; margin-bottom:6px; font-weight:500; color:#444;">
+          Username
+        </label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="credentials.username"
+          placeholder="Enter your username"
+          class="form-control"   
+          required
+          autofocus />
+      </div>
+ 
+      <div class="form-group">
+        <label for="password" style="display:block; margin-bottom:6px; font-weight:500; color:#444;">
+          Password
+        </label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="credentials.password"
+          placeholder="Enter your password"
+          class="form-control"   
+          required />
+      </div>
+ 
+      <button
+        type="submit"
+        class="login-btn"
+        style="width:100%; margin-top:10px;"
+        [disabled]="!credentials.username.trim() || !credentials.password">
+        Log In
+      </button>
+
+    </form>
+ 
+    <div class="login-footer" style="margin-top:20px; text-align:center;">
+      <small>Demo: Use <strong>user</strong> / <strong>user</strong></small>
+    </div>
+
+  </div>
+
+</div>

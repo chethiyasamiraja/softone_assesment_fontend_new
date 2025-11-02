@@ -1,0 +1,121 @@
+<!-- Dashboard Container -->
+<div class="dashboard-container">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h1>Task Management</h1>
+    <button class="btn-add-task" (click)="resetForm()">
+      + Add New Task
+    </button>
+  </header>
+
+  <!-- Two-Column Layout -->
+  <div class="dashboard-body">
+
+    <!-- Left: Task Form -->
+    <div class="form-section">
+      <div class="form-card">
+        <h3>{{ editingTask?.id ? 'Edit Task' : 'Create New Task' }}</h3>
+
+        <!-- Title Input -->
+        <div class="form-group">
+          <label>Title *</label>
+          <input
+            type="text"
+            [(ngModel)]="taskTitle"
+            placeholder="Enter task title"
+            class="form-control"
+            required />
+        </div>
+
+        <!-- Description Input -->
+        <div class="form-group">
+          <label>Description</label>
+          <textarea
+            [(ngModel)]="taskDescription"
+            placeholder="Enter task details"
+            class="form-control"
+            rows="4"></textarea>
+        </div>
+
+        <!-- Due Date -->
+        <div class="form-group">
+          <label>Due Date</label>
+          <input
+            type="date"
+            [(ngModel)]="dueDate"
+            class="form-control" />
+        </div>
+
+        <!-- Is Completed Checkbox -->
+        <div class="form-group checkbox-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="isCompleted" />
+            Mark as Completed
+          </label>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button class="btn-cancel" (click)="resetForm()">Cancel</button>
+          <button class="btn-save" (click)="saveTask()" [disabled]="!taskTitle.trim()">
+            {{ editingTask?.id ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Task List -->
+   <!-- Right: Task List -->
+<div class="list-section">
+  <div class="list-header">
+    <h3>Task List</h3>
+
+    <!-- Filters & Sort -->
+    <div class="controls">
+      <select [(ngModel)]="filterStatus" class="filter-select" (change)="applyFiltersAndSort()">
+        <option value="all">All Tasks</option>
+        <option value="active">Active</option>
+        <option value="completed">Completed</option>
+      </select>
+
+      <select [(ngModel)]="sortBy" class="filter-select" (change)="applyFiltersAndSort()">
+        <option value="created">Sort by: Newest</option>
+        <option value="title">Sort by: Title A-Z</option>
+        <option value="duedate">Sort by: Due Date</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ✅ Scrollable Container -->
+  <div class="task-list-container">
+    <div class="task-grid">
+      <div *ngIf="filteredTasks.length === 0" class="no-tasks">
+        No tasks found. Add one to get started!
+      </div>
+
+      <div class="task-item" *ngFor="let task of filteredTasks">
+        <div class="task-content">
+          <h4 [class.completed]="task.isCompleted">{{ task.title }}</h4>
+          <p class="description" *ngIf="task.description">{{ task.description }}</p>
+          <p class="meta">
+            <span>Due: {{ task.dueDate ? (task.dueDate | date:'shortDate') : 'Not set' }}</span> |
+            <span>Created: {{ task.createdDate | date:'shortDate' }}</span>
+          </p>
+          <span 
+            [class]="'status-badge ' + (task.isCompleted ? 'status-completed' : 'status-active')">
+            {{ task.isCompleted ? 'Completed' : 'Active' }}
+          </span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="task-actions">
+          <button class="btn-edit" (click)="editTask(task)">Edit</button>
+          <button class="btn-delete" *ngIf="task.id" (click)="deleteTask(task.id!)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>

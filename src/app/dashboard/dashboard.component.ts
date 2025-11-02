@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';  
 import { Task } from '../Modal/task.model'; 
 import { TaskService } from '../shared/services/tasks.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
  
 
 @Component({
@@ -26,44 +26,22 @@ export class DashboardComponent implements OnInit {
   sortBy: 'created' | 'title' | 'duedate' = 'created';
 
   constructor(
- private taskService: TaskService
+ private taskService: TaskService,
+  private router: Router
   ) {}
 
-  ngOnInit(): void {
-    //this.loadSampleData();  
+  ngOnInit(): void {  
     this.loadTasks();
     this.applyFiltersAndSort();
   }
- 
-  // loadSampleData(): void {
-  //   const now = new Date();
-  //   this.allTasks = [
-  //     {
-  //       id: 1,
-  //       title: 'Design Login Page',
-  //       description: 'Create responsive login UI with SCSS.',
-  //       isCompleted: true,
-  //       createdDate: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000),
-  //       dueDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000)
-  //     },
-  //     {
-  //       id: 2,
-  //       title: 'Fix API Bug',
-  //       description: 'Resolve authentication timeout issue.',
-  //       isCompleted: false,
-  //       createdDate: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
-  //       dueDate: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000)
-  //     }
-  //   ];
-  //   this.filteredTasks = [...this.allTasks];
-  // }
+  
 
 
 public loadTasks(): void {
   this.taskService.getAllTasks().subscribe({
     next: (response) => {
       if (response.succeeded && response.data) {
-        // Convert string dates to Date objects
+         
         this.allTasks = response.data.map(t => ({
           ...t,
           createdDate: new Date(t.createdDate),
@@ -71,12 +49,12 @@ public loadTasks(): void {
         }));
         this.applyFiltersAndSort();
       } else {
-       // this.errorMessage = response.message || 'Failed to load tasks.';
+        
       }
     },
     error: (err) => {
       console.error('API Error', err);
-      //this.errorMessage = 'Could not connect to server.';
+       
     }
   });
 }
@@ -127,12 +105,12 @@ public saveTask(): void {
 
         this.applyFiltersAndSort();
         
-        // ✅ Show success message
+         
         alert(response.message || 'Task saved successfully!');
 
         this.resetForm();
       } else {
-        // Show failure message
+         
         alert(response.message || 'Failed to save task.');
       }
     },
@@ -192,6 +170,12 @@ public saveTask(): void {
 
 
 
+
+LogoutForm(): void { 
+    sessionStorage.removeItem('isLoggedIn');
+ 
+    this.router.navigate(['/login']);
+  }
 
 
 
